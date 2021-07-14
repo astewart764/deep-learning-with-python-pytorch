@@ -1,6 +1,5 @@
 import torch
 import torch.nn as nn
-import torch.cuda as CUDA
 import torch.nn.functional as F
 import numpy as np
 from keras.datasets import imdb
@@ -51,19 +50,7 @@ def vectorise_sequences(sequences, dimension = 20000, d_type = np.int64):
 
     return vector
 
-def get_device():
-    device_name = CUDA.get_device_name()
-    if CUDA.is_available():
-        device = 'cuda:0'
-        print("CUDA device available : Using " + device_name + "\n")
-
-    else:
-        device = 'cpu'
-        print("CUDA device unavailable : Using " + device_name + "\n")
-
-    return device, device_name
-
-def testing_procedure(network, data, device):
+def testing_procedure(network, data):
 
     x_data, y_data = data
 
@@ -87,7 +74,7 @@ def main(sample_size = 100):
     network = FFNetwork(in_feats = 20000, out_feats = 1)
     network.load_state_dict(torch.load(str(Path(__file__).parent.parent) + '\\.models\\IMDb_checkpoint.pt'))
 
-    predictions, labels = testing_procedure(network, test_data, 'cpu')
+    predictions, labels = testing_procedure(network, test_data)
     predictions = predictions.squeeze()
     accuracy        =   [int(predictions[idx] == labels[idx]) for idx in range(len(labels))]
     accuracy        =   sum(accuracy)/len(accuracy) * 100

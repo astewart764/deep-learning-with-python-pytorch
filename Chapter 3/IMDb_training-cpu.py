@@ -107,12 +107,7 @@ def main():
 
     network = FFNetwork(in_feats = 20000, out_feats = 1)
 
-    kwargs = {'batch_size'  : 16,
-              'shuffle'     : True,
-              'num_workers' : 0,
-              'drop_last'   : True,
-              'pin_memory'  : False,
-             }
+
 
     training_procedure(network, train_data, 'cpu', 1, kwargs)
 
